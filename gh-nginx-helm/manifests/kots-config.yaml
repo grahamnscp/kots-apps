@@ -1,0 +1,35 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: nginxhelm-config
+spec:
+  groups:
+    - name: NginxHelmApp
+      title: NginxHelmApp
+      description: NginxHelmApp configContent Defaults
+      items:
+        - name: configcontent-title 
+          title: "Nginx Page Title"
+          type: text
+          default: "kots: Nginx Helm App"
+        - name: configcontent-heading 
+          title: "Nginx Page Heading"
+          type: text
+          default: "kots: Ngnix Helm App heading"
+        - name: configcontent-text 
+          title: "Nginx Body Text"
+          type: text
+          default: "kots: This is the Nginx Helm App text"
+        - name: configcontent-title2
+          title: "Nginx Page Title2"
+          type: text
+          default: "kots: Nginx Helm App2"
+        - name: configcontent-heading2
+          title: "Nginx Page Heading2"
+          type: text
+          default: "kots: Ngnix Helm App heading2"
+        - name: configcontent-text2
+          title: "Nginx Body Text2"
+          type: text
+          default: "kots: This is the Nginx Helm App text2"
+

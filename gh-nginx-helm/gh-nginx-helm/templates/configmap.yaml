@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>{{ .Values.configContent.title }}</title>
+    </head>
+    <body>
+      <h2>{{ .Values.configContent.heading }}</h2>
+      {{ .Values.configContent.text }}
+    </body>
+    </html>

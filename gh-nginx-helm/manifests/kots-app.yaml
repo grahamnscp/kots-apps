@@ -1,0 +1,22 @@
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: nginxhelm
+spec:
+  title: "Simple Nginx Helm App"
+  icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/black/kubernetes-icon-black.png
+  additionalNamespaces:
+    - gh-helm-app
+    - gh-helm-app2
+  statusInformers:
+    - gh-helm-app/deployment/gh-helm-app-gh-nginx-helm
+    - gh-helm-app2/deployment/gh-helm-app2-gh-nginx-helm
+  ports:
+    - serviceName: "gh-helm-app-gh-nginx-helm"
+      servicePort: 80
+      localPort: 8081
+      applicationUrl: "http://gh-helm-app-gh-nginx-helm"
+    - serviceName: "gh-helm-app2-gh-nginx-helm"
+      servicePort: 80
+      localPort: 8082
+      applicationUrl: "http://gh-helm-app2-gh-nginx-helm"

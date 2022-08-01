@@ -1,0 +1,34 @@
+apiVersion: kots.io/v1beta1
+kind: HelmChart
+metadata:
+  name: gh-helm-app2
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: gh-nginx-helm
+    chartVersion: "0.1.0"
+    releaseName: gh-helm-app2
+
+  # helmVersion identifies the Helm Version used to render the chart. Default is v2.
+  helmVersion: v3
+
+  # useHelmInstall identifies whether this Helm chart will use the
+  # Replicated Helm installation (false) or native Helm installation (true). Default is false.
+  # Native Helm installations are only available for Helm v3 charts.
+  useHelmInstall: true
+
+  # weight determines the order that charts with "useHelmInstall: true" are applied, with lower weights first.
+  weight: 0
+
+  namespace: gh-helm-app2
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values: 
+    service:
+      nodeport: 8082
+    configContent:
+      title: '{{repl ConfigOption "configcontent-title2"}}'
+      heading: '{{repl ConfigOption "configcontent-heading2"}}'
+      text: '{{repl ConfigOption "configcontent-text2"}}'
+

@@ -1,0 +1,11 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "nginxhelm"
+spec:
+  descriptor:
+    links:
+      - description: Nginx Instance 1
+        url: "http://gh-helm-app-gh-nginx-helm"
+      - description: Nginx Instance 2
+        url: "http://gh-helm-app2-gh-nginx-helm"
