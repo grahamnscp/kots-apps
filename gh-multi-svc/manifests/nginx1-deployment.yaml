@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx1
+  labels:
+    app: nginx1
+  annotations:
+    configmap.reloader.stakater.com/reload: "nginx1-html"
+spec:
+  selector:
+    matchLabels:
+      app: nginx1
+  template:
+    metadata:
+      labels:
+        app: nginx1
+    spec:
+      containers:
+        - name: nginx1
+          image: nginx:1.23.1
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: html1
+          resources:
+            limits:
+              memory: '256Mi'
+              cpu: '500m'
+            requests:
+              memory: '32Mi'
+              cpu: '100m'
+      volumes:
+        - name: html1
+          configMap:
+            name: nginx1-html

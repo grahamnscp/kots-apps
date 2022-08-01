@@ -1,0 +1,19 @@
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: multisvcapp
+spec:
+  title: "Multi Service App"
+  icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/black/kubernetes-icon-black.png
+  statusInformers:
+    - deployment/nginx1
+    - deployment/nginx2
+  ports:
+    - serviceName: "nginx1"
+      servicePort: 80
+      localPort: 8081
+      applicationUrl: "http://nginx1"
+    - serviceName: "nginx2"
+      servicePort: 80
+      localPort: 8082
+      applicationUrl: "http://nginx2"

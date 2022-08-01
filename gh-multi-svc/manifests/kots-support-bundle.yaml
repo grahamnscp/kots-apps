@@ -1,0 +1,13 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: multisvcapp
+spec:
+  collectors:
+    - logs:
+        selector:
+          - app=nginx1
+          - app=nginx2
+        namespace: '{{repl Namespace }}'
+  analyzers: []
+

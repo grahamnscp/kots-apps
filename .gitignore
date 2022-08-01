@@ -1,0 +1,9 @@
+.envrc*
+**/deps/LICENSE
+**/deps/README.md
+**/deps/replicated
+.DS_Store
+Makefile
+built/
+deps/
+*.swp

@@ -1,0 +1,19 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: multisvcapp-config
+spec:
+  groups:
+    - name: multisvcapp
+      title: MultiSvcApp
+      description: MultiSvcApp Defaults
+      items:
+        - name: multisvcapp-nginx1-text
+          title: "Nginx 1 Text"
+          type: text
+          default: "This is the NGINX Service 1"
+        - name: multisvcapp-nginx2-text
+          title: "Nginx 2 Text"
+          type: text
+          default: "This is the NGINX Service 2"
+
