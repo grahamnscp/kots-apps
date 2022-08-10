@@ -1,0 +1,18 @@
+
+Helm creation notes
+===================
+
+create template chart
+
+$ helm create gh-nginx-helm
+
+modify chart as required then package
+
+$ cd gh-nginx-helm
+$ helm package .
+
+copy chart into manifests directory
+
+$ cp gh-nginx-helm-0.1.0.tgz ../manifests/helmcharts/
+
+
