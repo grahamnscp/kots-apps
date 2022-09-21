@@ -1,0 +1,19 @@
+---
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: echo-server-config
+spec:
+  groups:
+  - name: echo_server_settings
+    title: Echo Server Config
+    items:
+    - name: config_value
+      title: Config Value
+      help_text: "Some config value"
+      type: text
+    - name: test_config_value
+      title: Test With Me
+      help_text: "A config value used for testing"
+      type: text
+      required: true

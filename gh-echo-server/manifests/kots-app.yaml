@@ -1,0 +1,8 @@
+---
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: echo-server
+spec:
+  title: Echo Server
+  icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.png
