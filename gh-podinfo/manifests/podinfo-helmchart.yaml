@@ -1,0 +1,35 @@
+apiVersion: kots.io/v1beta1
+kind: HelmChart
+metadata:
+  name: ci-podinfo
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: podinfo
+    chartVersion: "6.2.0"
+    releaseName: ci-podinfo
+
+  # helmVersion identifies the Helm Version used to render the chart. Default is v2.
+  helmVersion: v3
+
+  # useHelmInstall identifies whether this Helm chart will use the
+  # Replicated Helm installation (false) or native Helm installation (true). Default is false.
+  # Native Helm installations are only available for Helm v3 charts.
+  useHelmInstall: true
+
+  # helmUpgradeFlags specifies additional flags to pass to the `helm upgrade` command.
+  helmUpgradeFlags:
+    - --atomic
+    - --create-namespace
+
+  namespace: '{{repl ConfigOption "app_namespace" }}'
+
+  values:
+    replicaCount: '{{repl ConfigOption "replicas" }}'
+
+    service:
+      nodeport: 8080
+
+    ingress:
+      enabled: '{{repl ConfigOption "ingress_enabled" }}'
+

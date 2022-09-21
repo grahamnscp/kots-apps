@@ -1,0 +1,22 @@
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: ci-podinfo
+  annotations:
+    kots.io/exclude: "true"
+spec:
+  title: PodInfo App
+  icon: https://gitops-community.github.io/cuddle_clap.gif
+  additionalNamespaces:
+    - "*"
+  allowRollback: true
+  statusInformers:
+    - '{{repl ConfigOption "app_namespace" }}/replicaset/ci-podinfo'
+    - '{{repl ConfigOption "app_namespace" }}/deployment/ci-podinfo'
+    - '{{repl ConfigOption "app_namespace" }}/service/ci-podinfo'
+    - '{{repl ConfigOption "app_namespace" }}/service/podinfo-web'
+  ports:
+    - serviceName: "podinfo-web"
+      servicePort: 80
+      localPort: 8082
+      applicationUrl: "http://podinfo-web"

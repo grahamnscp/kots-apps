@@ -1,0 +1,25 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: app-config
+  annotations:
+    kots.io/exclude: "true"
+spec:
+  groups:
+    - name: app_settings
+      title: Example Config for Kots App
+      description: Configuration to serve as an example for creating your own. See [https://kots.io/reference/v1beta1/config/](https://kots.io/reference/v1beta1/config/) for configuration docs.
+      items:
+        - name: replicas
+          title: Number of Replicas
+          type: text
+          default: "2"
+        - name: app_namespace
+          title: App Namespace
+          type: text
+          hidden: true
+          default: "podinfo"
+        - name: ingress_enabled
+          title: Enabled
+          type: bool
+          default: true

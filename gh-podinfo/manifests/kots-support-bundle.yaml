@@ -1,0 +1,45 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: app-support-bundle
+spec:
+  collectors:
+    - clusterInfo: {}
+    - clusterResources:
+        namespaces:
+          - default
+          - repl{{ ConfigOption "app_namespace" }}
+    - logs:
+        selector:
+          - app=ci-podinfo
+        namespace: '{{repl Namespace }}'
+        limits:
+          maxAge: 30d
+          maxLines: 10000
+    - runPod:
+        name: "ping-test"
+        namespace: default
+        podSpec: 
+          containers:
+          - name: ping-test
+            image: busybox:1
+            command: ["ping"]
+            args: ["-c", "5", "api.replicated.com"]
+    - exec:
+        name: mysql-version
+        selector:
+          - app=mysql
+        namespace: repl{{ ConfigOption "app_namespace" }}
+        command: ["mysql"]
+        args: ["-V"]
+        timeout: 5s
+    - sysctl:
+        image: debian:buster-slim
+  analyzers:
+    - sysctl:
+        checkName: IP forwarding enabled
+        outcomes:
+        - fail:
+            when: "net.ipv4.ip_forward = 0"
+            message: "IP forwarding is not enabled"
+

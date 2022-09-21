@@ -1,0 +1,11 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "podinfo app"
+spec:
+  descriptor:
+    links:
+      - description: Open PodInfo UI
+        url: "http://podinfo-web"
+      - description: Open Swagger API
+        url: "http://podinfo-web/swagger/index.html"
