@@ -18,7 +18,7 @@ spec:
   useHelmInstall: true
 
   # weight determines the order that charts with "useHelmInstall: true" are applied, with lower weights first.
-  weight: 0
+  weight: 10
 
   namespace: gh-helm-app
 
