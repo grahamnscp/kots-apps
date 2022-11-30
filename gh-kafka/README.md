@@ -1,6 +1,8 @@
 # Replicated vendor portal app manifest files to show muliple helm chart components
 Manifest files for the replicated vendor portal to deploy a sample application made up of multiple helm charts.  Some components are enabled using custom license fields used as feature flags.
 
+![gh-kafka Sample App Screenshot](images/gh-kafka-sample-app.png)
+
 Ensure that you have a valid Replicated Vendor Portal API token defined in your environment and set the desired application slug value.
 
 ```
