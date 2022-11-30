@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-kafka-producer
+  labels:
+    app: app-kafka-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-kafka-producer
+  template:
+    metadata:
+      labels:
+        app: app-kafka-producer
+    spec:
+      serviceAccountName: kotsadm
+      initContainers:
+      - name: wait-for-kafka-ready-init
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - kubectl
+        args:
+          - wait
+          - pod/app-kafka-0
+          - --for=condition=ready
+          - --timeout=120s
+      containers:
+      - name: kafka-client
+        image: confluentinc/cp-kafka:7.3.0
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        env:
+        - name: KAFKA_BROKER 
+          value: '{{repl ConfigOption "kafka_brokerconnect"}}'
+        command:
+          - sh
+          - -c
+          - "i=1 ; while true; do dt=`date` ; echo Sending message $i ; echo $dt,$i,message $i,$((1000+10*i)) | kafka-console-producer --topic topic-test --broker-list $KAFKA_BROKER ; ((i++)) ; sleep 300;  done"
+          # kafka-console-consumer --topic topic-test --bootstrap-server app-kafka.default.svc.cluster.local:9092 --from-beginning
+      restartPolicy: Always

@@ -1,0 +1,103 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: config-sample
+spec:
+  groups:
+    ### Kafka Settings ###
+    - name: kafka
+      title: "Kafka Settings:"
+      items:
+        - name: kafka_brokerconnect
+          type: text
+          value: "app-kafka.default.svc.cluster.local:9092"
+          default: "app-kafka.default.svc.cluster.local:9092"
+
+    ### Postgres Settings ###
+    - name: database
+      title: "Postgresql Settings:"
+      items:
+
+        ### When Feature Flag: Embedded Postgres is available ###
+        - name: postgres_type
+          help_text: Would you like to use an embedded postgres instance, or connect to an external instance that you manage?
+          type: select_one
+          title: Postgres
+          default: embedded_postgres
+          items:
+            - name: embedded_postgres
+              title: Embedded Postgres
+            - name: external_postgres
+              title: External Postgres
+          when: '{{repl eq (LicenseFieldValue "feature-flag-embedded-pg") "1" }}'
+
+        - name: embedded_postgres_password
+          hidden: true
+          type: password
+          value: "{{repl RandomString 32}}"
+          when: '{{repl ConfigOptionEquals "postgres_type" "embedded_postgres"}}'
+
+        ### Force External Postgres when Feature Flag for Embedded is not available ###
+        - name: postgres_type
+          help_text: Would you like to use an embedded postgres instance, or connect to an external instance that you manage?
+          type: select_one
+          title: Postgres
+          default: external_postgres
+          items:
+            - name: external_postgres
+              title: External Postgres
+          hidden: true
+          when: '{{repl not (eq (LicenseFieldValue "feature-flag-embedded-pg") "1") }}'
+
+        ### External Postgres Settings ###
+        - name: external_postgres_host
+          title: Postgres Host
+          when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres"}}'
+          type: text
+          default: postgres
+        - name: external_postgres_port
+          title: Postgres Port
+          when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres"}}'
+          type: text
+          default: "5432"
+        - name: external_postgres_user
+          title: Postgres Username
+          when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres"}}'
+          type: text
+          default: "postgres"
+          required: true
+        - name: external_postgres_password
+          title: Postgres Password
+          when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres"}}'
+          type: password
+          required: true
+        - name: external_postgres_db
+          title: Postgres Database
+          when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres"}}'
+          type: text
+          default: postgres
+        - name: external_postgres_sslmode
+          title: Postgres SSL Mode
+          when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres"}}'
+          default: postgres_sslmode_require
+          type: select_one
+          items:
+            - name: postgres_sslmode_require
+              title: Require
+            - name: postgres_sslmode_allow
+              title: Allow
+        - name: postgres_sslmode_value
+          hidden: true
+          when: '{{repl ConfigOptionEquals "external_postgres_sslmode" "postgres_sslmode_require"}}'
+          type: text
+          value: "require"
+        - name: postgres_sslmode_value
+          hidden: true
+          when: '{{repl ConfigOptionEquals "external_postgres_sslmode" "postgres_sslmode_allow"}}'
+          type: text
+          value: "allow"
+        - name: external_postgres_confighash
+          hidden: true
+          readonly: true
+          type: text
+          value: '{{repl (sha256sum (print (ConfigOption "external_postgres_host") (ConfigOption "external_postgres_port") (ConfigOption "external_postgres_user") (ConfigOption "external_postgres_password") (ConfigOption "external_postgres_db") ))}}'

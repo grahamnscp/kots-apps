@@ -1,0 +1,11 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+   name: collectors
+spec:
+   collectors:
+     - clusterInfo:
+        exclude: false
+     - clusterResources:
+        namespaces:
+        - default

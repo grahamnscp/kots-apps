@@ -1,0 +1,42 @@
+apiVersion: kots.io/v1beta1
+kind: HelmChart
+metadata:
+  name: app-postgres
+
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: postgresql
+    chartVersion: "12.1.2"
+    releaseName: app-postgres
+
+  # https://docs.replicated.com/reference/custom-resource-helmchart#exclude
+  exclude: 'repl{{not (eq (LicenseFieldValue "feature-flag-embedded-pg") "1") }}'
+
+  # helmVersion identifies the Helm Version used to render the chart. Default is v2.
+  helmVersion: v3
+
+  # useHelmInstall identifies whether this Helm chart will use the
+  # Replicated Helm installation (false) or native Helm installation (true). Default is false.
+  # Native Helm installations are only available for Helm v3 charts.
+  useHelmInstall: true
+
+  # weight determines the order that charts with "useHelmInstall: true" are applied, with lower weights first.
+  weight: 20
+
+  namespace: default
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values: 
+    auth:
+      enablePostgresUser: true
+      existingSecret: postgres-secret
+      secretKeys:
+        adminPasswordKey: postgres-password
+        userPasswordKey: password
+        replicationPasswordKey: replication-password
+
+  # database: app-postgres-postgresql.default.svc.cluster.local:5432
+  # PGPASSWORD=<value from secret>
+  # psql -U postgres postgres
