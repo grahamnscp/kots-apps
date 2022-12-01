@@ -11,8 +11,7 @@ spec:
     ###EXTERNAL POSTGRES###
     - postgres:
         collectorName: postgresql
-        ####exclude: repl{{ ConfigOptionEquals "postgres_type" "embedded_postgres"}}###
-        exclude: repl{{ ConfigOptionEquals "postgres_type" "external_postgres"}}
+        exclude: repl{{ ConfigOptionEquals "postgres_type" "embedded_postgres"}}
         uri: 'postgresql://{{repl ConfigOption "external_postgres_user"}}:{{repl ConfigOption "external_postgres_password"}}@{{repl ConfigOption "external_postgres_host"}}:{{repl ConfigOption "external_postgres_port"}}/{{repl ConfigOption "external_postgres_db"}}?sslmode={{repl ConfigOption "postgres_sslmode_value"}}'
   analyzers:
     - nodeResources:
@@ -35,8 +34,7 @@ spec:
     - postgres:
         checkName: Must be PostgreSQL 12.x or later
         collectorName: postgresql
-        ####exclude: repl{{ ConfigOptionEquals "postgres_type" "embedded_postgres"}}###
-        exclude: repl{{ ConfigOptionEquals "postgres_type" "external_postgres"}}
+        exclude: repl{{ ConfigOptionEquals "postgres_type" "embedded_postgres"}}
         outcomes:
           - fail:
               when: connected == false
