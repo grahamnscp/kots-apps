@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# active channel to promote release sequence to
+CHANNEL=Beta
+
+# get latest sequence in Unstable channel
+SEQUENCE=`replicated release ls --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN} | grep Unstable | awk '{print $1}'`
+
+# get latest version in $CHANNEL
+LATEST_VERSION=`replicated --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN} channel ls | grep ${CHANNEL} | awk '{print $4}'`
+
+# version is sequenced so need to break it down and increment the minor part :/
+VERSION_MAJOR=`echo $LATEST_VERSION | awk -F. '{printf "%s.%s",$1,$2}'`
+VERSION_MINOR=`echo $LATEST_VERSION | awk -F. '{print $3}'`
+VERSION_MINOR_INC=$((VERSION_MINOR+1))
+NEW_VERSION=${VERSION_MAJOR}.${VERSION_MINOR_INC}
+
+#
+echo "Promoting release ${SEQUENCE} to channel ${CHANNEL} as version ${NEW_VERSION}.."
+replicated release promote ${SEQUENCE} ${CHANNEL} --version ${NEW_VERSION} --app ${REPLICATED_APP} --token $REPLICATED_API_TOKEN
+

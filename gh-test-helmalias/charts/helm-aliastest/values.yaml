@@ -1,0 +1,14 @@
+# values
+
+appinst1:
+  replicaCount: 1
+  service:
+    type: NodePort
+    nodeport: 8081
+
+appinst2:
+  replicaCount: 2
+  service:
+    type: NodePort
+    nodeport: 8082
+
